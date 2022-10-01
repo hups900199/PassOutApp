@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "87057970639",
+    "project_id": "passoutapp",
+    "storage_bucket": "passoutapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:87057970639:android:0e55c6a4523f2e22bc0eba",
+        "android_client_info": {
+          "package_name": "com.example.passoutapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "87057970639-5kavfonjeltvv35cgte863d0u2v8dckl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvMo-67alFsKrmS7sQfs4a67alOaPfZJA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "87057970639-5kavfonjeltvv35cgte863d0u2v8dckl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
