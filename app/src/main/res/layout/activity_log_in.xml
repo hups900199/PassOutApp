@@ -8,7 +8,7 @@
     android:background="@drawable/background">
 
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/edt_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -18,16 +18,16 @@
         android:background="#95ffffff"
         android:drawableLeft="@drawable/ic_baseline_person_24"
         android:drawablePadding="20dp"
-        android:hint="Username"
+        android:hint="Email"
         android:padding="20dp"
         android:textColor="@color/black"
         android:textColorHint="@color/black" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/passwordLayout"
+        android:id="@+id/layout_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/username"
+        android:layout_below="@id/edt_email"
         android:textColorHint="#000000"
         app:boxStrokeColor="@color/black"
         app:hintTextColor="@color/black"
@@ -35,10 +35,10 @@
         app:passwordToggleTint="#000000" >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/password"
+            android:id="@+id/edt_sign_in_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/username"
+            android:layout_below="@id/edt_email"
             android:layout_margin="16dp"
             android:background="#95ffffff"
             android:drawableLeft="@drawable/ic_baseline_vpn_key_24"
@@ -51,10 +51,10 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/loginbtn"
+        android:id="@+id/btn_log_in"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/passwordLayout"
+        android:layout_below="@id/layout_password"
         android:layout_centerHorizontal="true"
         android:layout_margin="20dp"
         android:backgroundTint="#4AB806"
@@ -64,7 +64,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/register"
-        android:layout_below="@id/loginbtn"
+        android:layout_below="@id/btn_log_in"
         android:text="Register Now"
         android:textColor="@color/black"
         android:layout_centerHorizontal="true"
@@ -74,14 +74,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/others"
-        android:layout_above="@id/socialicons"
+        android:layout_above="@id/txv_social_icons"
         android:text="or sign in with"
         android:layout_centerHorizontal="true"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/socialicons"
+        android:id="@+id/txv_social_icons"
         android:layout_alignParentBottom="true"
         android:gravity="center">
 

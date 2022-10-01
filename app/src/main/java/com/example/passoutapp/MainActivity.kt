@@ -18,7 +18,9 @@ class MainActivity : AppCompatActivity() {
 
         firebaseAuth = FirebaseAuth.getInstance()
 
-        binding.signoutbtn.setOnClickListener {
+        binding.txvEmail.text = FirebaseAuth.getInstance().currentUser?.email
+
+        binding.btnSignOut.setOnClickListener {
             firebaseAuth.signOut()
             val intent = Intent(this, LogInActivity::class.java)
             startActivity(intent)

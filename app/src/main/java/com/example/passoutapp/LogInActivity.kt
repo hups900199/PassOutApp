@@ -30,9 +30,9 @@ class LogInActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        binding.loginbtn.setOnClickListener {
-            val user = binding.username.text.toString()
-            val pass = binding.password.text.toString()
+        binding.btnLogIn.setOnClickListener {
+            val user = binding.edtEmail.text.toString()
+            val pass = binding.edtSignInPassword.text.toString()
 
             if (user.isNotEmpty() && pass.isNotEmpty()) {
                 firebaseAuth.signInWithEmailAndPassword(user, pass).addOnCompleteListener{

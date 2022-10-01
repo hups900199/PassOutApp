@@ -24,12 +24,12 @@ class SignUpActivity : AppCompatActivity() {
 
         firebaseAuth = FirebaseAuth.getInstance()
 
-        binding.textView.setOnClickListener { redirectToLogIn() }
+        binding.txvSignIn.setOnClickListener { redirectToLogIn() }
 
-        binding.button.setOnClickListener {
-            val user = binding.username.text.toString()
-            val pass = binding.passET.text.toString()
-            val confirmpass = binding.confirmPassEt.text.toString()
+        binding.btnSignUp.setOnClickListener {
+            val user = binding.edtEmail.text.toString()
+            val pass = binding.edtPassword.text.toString()
+            val confirmpass = binding.edtConfirmPassword.text.toString()
 
             if (user.isNotEmpty() && pass.isNotEmpty() && confirmpass.isNotEmpty()) {
                 if (pass == confirmpass) {
