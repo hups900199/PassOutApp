@@ -10,7 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 
 class LogInActivity : AppCompatActivity() {
 
-    private lateinit var binding:ActivityLogInBinding
+    private lateinit var binding: ActivityLogInBinding
     private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,6 +19,11 @@ class LogInActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         firebaseAuth = FirebaseAuth.getInstance()
+
+        if (firebaseAuth.currentUser != null) {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
 
         binding.register.setOnClickListener {
             val intent = Intent(this, SignUpActivity::class.java)
