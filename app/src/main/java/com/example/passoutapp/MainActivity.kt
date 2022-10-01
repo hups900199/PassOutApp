@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
 
+    // Sets view binding.
     private lateinit var binding: ActivityMainBinding
     private lateinit var firebaseAuth: FirebaseAuth
 
@@ -18,6 +19,7 @@ class MainActivity : AppCompatActivity() {
 
         firebaseAuth = FirebaseAuth.getInstance()
 
+        // Sets email address.
         binding.txvEmail.text = FirebaseAuth.getInstance().currentUser?.email
 
         binding.btnSignOut.setOnClickListener {

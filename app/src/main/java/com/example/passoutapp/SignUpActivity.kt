@@ -9,8 +9,11 @@ import com.google.firebase.auth.FirebaseAuth
 
 class SignUpActivity : AppCompatActivity() {
 
+    // Sets view binding.
     private lateinit var binding: ActivitySignUpBinding
     private lateinit var firebaseAuth: FirebaseAuth
+
+    // Method: Redirects to login page.
     private fun redirectToLogIn(): Void? {
         val intent = Intent(this, LogInActivity::class.java)
         startActivity(intent)
@@ -24,8 +27,10 @@ class SignUpActivity : AppCompatActivity() {
 
         firebaseAuth = FirebaseAuth.getInstance()
 
+        // Handles sign in text view event.
         binding.txvSignIn.setOnClickListener { redirectToLogIn() }
 
+        // Handles sign up button event.
         binding.btnSignUp.setOnClickListener {
             val user = binding.edtEmail.text.toString()
             val pass = binding.edtPassword.text.toString()
