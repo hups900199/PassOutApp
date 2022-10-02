@@ -14,26 +14,15 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
     private lateinit var firebaseAuth: FirebaseAuth
 
-    // Method: Redirects to an activity.
-    private fun goToActivity(activity: Activity, classes: Class<*>?) {
-        val intent = Intent(activity, classes)
-        startActivity(intent)
-        activity.finish()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Init firebase auth.
         firebaseAuth = FirebaseAuth.getInstance()
 
-        // Handles sign in text view event.
-        binding.txvSignIn.setOnClickListener {
-            goToActivity(this, LogInActivity::class.java)
-        }
-
-        // Handles sign up button event.
+        // Handles sign up Button event.
         binding.btnSignUp.setOnClickListener {
             val user = binding.edtEmail.text.toString()
             val pass = binding.edtPassword.text.toString()
@@ -48,5 +37,17 @@ class SignUpActivity : AppCompatActivity() {
                 } else Toast.makeText(this, "Password is not matching", Toast.LENGTH_SHORT).show()
             } else Toast.makeText(this, "Empty fields are not allowed", Toast.LENGTH_SHORT).show()
         }
+
+        // Handles sign in TextView event.
+        binding.txvSignIn.setOnClickListener {
+            goToActivity(this, LogInActivity::class.java)
+        }
+    }
+
+    // Method: Redirects to an activity.
+    private fun goToActivity(activity: Activity, classes: Class<*>?) {
+        val intent = Intent(activity, classes)
+        startActivity(intent)
+        activity.finish()
     }
 }

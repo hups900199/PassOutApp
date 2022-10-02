@@ -86,18 +86,21 @@
         android:gravity="center">
 
         <ImageView
+            android:id="@+id/imv_google"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_margin="20dp"
             android:src="@drawable/google"/>
 
         <ImageView
+            android:id="@+id/imv_facebook"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_margin="20dp"
             android:src="@drawable/fb"/>
 
         <ImageView
+            android:id="@+id/imv_twitter"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_margin="20dp"

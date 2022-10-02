@@ -13,6 +13,22 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var firebaseAuth: FirebaseAuth
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        // Init firebase auth.
+        firebaseAuth = FirebaseAuth.getInstance()
+        checkUser()
+
+        // Handles sign out Button event.
+        binding.btnSignOut.setOnClickListener {
+            firebaseAuth.signOut()
+            checkUser()
+        }
+    }
+
     // Method: Redirects to an activity.
     private fun goToActivity(activity: Activity, classes: Class<*>?) {
         val intent = Intent(activity, classes)
@@ -20,20 +36,21 @@ class MainActivity : AppCompatActivity() {
         activity.finish()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    // Determines a user has signed in.
+    private fun checkUser() {
+        // Gets current user.
+        val firebaseUser = firebaseAuth.currentUser
 
-        firebaseAuth = FirebaseAuth.getInstance()
-
-        // Sets email address.
-        binding.txvEmail.text = FirebaseAuth.getInstance().currentUser?.email
-
-        // Handles sign out button event.
-        binding.btnSignOut.setOnClickListener {
-            firebaseAuth.signOut()
+        if (firebaseUser == null) {
+            // User not logged in.
             goToActivity(this, LogInActivity::class.java)
+        } else {
+            // User logged in.
+            // Gets user info.
+            val email = firebaseUser.email
+
+            // Sets email address.
+            binding.txvEmail.text = email
         }
     }
 }

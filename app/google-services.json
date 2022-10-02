@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "87057970639-ei9lhp3im5vpbhu2t90h8jtvs0of2s94.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.passoutapp",
+            "certificate_hash": "8cc8f4aa18113098ae4bbc7e50e19178f3bced15"
+          }
+        },
+        {
           "client_id": "87057970639-5kavfonjeltvv35cgte863d0u2v8dckl.apps.googleusercontent.com",
           "client_type": 3
         }
