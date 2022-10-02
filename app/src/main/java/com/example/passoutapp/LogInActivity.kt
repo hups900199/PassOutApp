@@ -15,10 +15,9 @@ class LogInActivity : AppCompatActivity() {
     private lateinit var firebaseAuth: FirebaseAuth
 
     // Method: Redirects to main page.
-    private fun redirectToMain(): Void? {
+    private fun redirectToMain() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
-        return null
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

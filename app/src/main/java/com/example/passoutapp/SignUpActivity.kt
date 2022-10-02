@@ -14,10 +14,9 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var firebaseAuth: FirebaseAuth
 
     // Method: Redirects to login page.
-    private fun redirectToLogIn(): Void? {
+    private fun redirectToLogIn() {
         val intent = Intent(this, LogInActivity::class.java)
         startActivity(intent)
-        return null
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
