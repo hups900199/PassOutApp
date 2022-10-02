@@ -1,5 +1,6 @@
 package com.example.passoutapp
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,10 +14,11 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
     private lateinit var firebaseAuth: FirebaseAuth
 
-    // Method: Redirects to login page.
-    private fun redirectToLogIn() {
-        val intent = Intent(this, LogInActivity::class.java)
+    // Method: Redirects to an activity.
+    private fun goToActivity(activity: Activity, classes: Class<*>?) {
+        val intent = Intent(activity, classes)
         startActivity(intent)
+        activity.finish()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +29,9 @@ class SignUpActivity : AppCompatActivity() {
         firebaseAuth = FirebaseAuth.getInstance()
 
         // Handles sign in text view event.
-        binding.txvSignIn.setOnClickListener { redirectToLogIn() }
+        binding.txvSignIn.setOnClickListener {
+            goToActivity(this, LogInActivity::class.java)
+        }
 
         // Handles sign up button event.
         binding.btnSignUp.setOnClickListener {
@@ -38,7 +42,7 @@ class SignUpActivity : AppCompatActivity() {
             if (user.isNotEmpty() && pass.isNotEmpty() && confirmpass.isNotEmpty()) {
                 if (pass == confirmpass) {
                     firebaseAuth.createUserWithEmailAndPassword(user, pass).addOnCompleteListener{
-                        if (it.isSuccessful) redirectToLogIn()
+                        if (it.isSuccessful) goToActivity(this, LogInActivity::class.java)
                         else Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
                     }
                 } else Toast.makeText(this, "Password is not matching", Toast.LENGTH_SHORT).show()

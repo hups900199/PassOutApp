@@ -1,5 +1,6 @@
 package com.example.passoutapp
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -14,10 +15,11 @@ class LogInActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLogInBinding
     private lateinit var firebaseAuth: FirebaseAuth
 
-    // Method: Redirects to main page.
-    private fun redirectToMain() {
-        val intent = Intent(this, MainActivity::class.java)
+    // Method: Redirects to an activity.
+    private fun goToActivity(activity: Activity, classes: Class<*>?) {
+        val intent = Intent(activity, classes)
         startActivity(intent)
+        activity.finish()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,13 +30,13 @@ class LogInActivity : AppCompatActivity() {
         firebaseAuth = FirebaseAuth.getInstance()
 
         // Determines a user has signed in.
-        if (firebaseAuth.currentUser != null) redirectToMain();
+        if (firebaseAuth.currentUser != null) {
+            goToActivity(this, MainActivity::class.java)
+        }
 
         // Handles register text view event.
         binding.register.setOnClickListener {
-            // Redirects to sign up page.
-            val intent = Intent(this, SignUpActivity::class.java)
-            startActivity(intent)
+            goToActivity(this, SignUpActivity::class.java)
         }
 
         // Handles login button event.
@@ -44,7 +46,7 @@ class LogInActivity : AppCompatActivity() {
 
             if (user.isNotEmpty() && pass.isNotEmpty()) {
                 firebaseAuth.signInWithEmailAndPassword(user, pass).addOnCompleteListener{
-                    if (it.isSuccessful) redirectToMain()
+                    if (it.isSuccessful) goToActivity(this, MainActivity::class.java);
                     else Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
                 }
             } else Toast.makeText(this, "Empty fields are not allowed", Toast.LENGTH_SHORT).show()

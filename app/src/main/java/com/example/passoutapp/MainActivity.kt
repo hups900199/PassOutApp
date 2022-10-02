@@ -1,5 +1,6 @@
 package com.example.passoutapp
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,6 +13,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var firebaseAuth: FirebaseAuth
 
+    // Method: Redirects to an activity.
+    private fun goToActivity(activity: Activity, classes: Class<*>?) {
+        val intent = Intent(activity, classes)
+        startActivity(intent)
+        activity.finish()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -22,10 +30,10 @@ class MainActivity : AppCompatActivity() {
         // Sets email address.
         binding.txvEmail.text = FirebaseAuth.getInstance().currentUser?.email
 
+        // Handles sign out button event.
         binding.btnSignOut.setOnClickListener {
             firebaseAuth.signOut()
-            val intent = Intent(this, LogInActivity::class.java)
-            startActivity(intent)
+            goToActivity(this, LogInActivity::class.java)
         }
     }
 }
