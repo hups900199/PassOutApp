@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">PassOutApp</string>
+
+    <string name="facebook_app_id">1455254131643066</string>
+    <string name="fb_login_protocol_scheme">fb1455254131643066</string>
+    <string name="facebook_client_token">EAAUri8GTEroBAF8nasGSPoCm3tyhafGqoTEsZAd4VEmEtDpgxaO20TL1eUk2ZAuqeZCCJhz4afLbLUuKij4GSt2I3pPpAB2BpPd4cgZCl3rrMN6W5aH1YaFaVqctZBk521Ggz1o5qLm0x1GHZCjCqz09jOZBZCFdUcT08RGFxzEezOeJF3Glp8IZBMWSZBN1nDk9iZAndSJRk6N7H4ZCw6iiqiafXLDTcHaaZA8D6JK0LHQ8GGK06md2a3Of1</string>
+
+
 </resources>
