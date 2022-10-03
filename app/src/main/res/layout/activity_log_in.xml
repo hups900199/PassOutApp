@@ -92,8 +92,8 @@
             android:layout_margin="20dp"
             android:src="@drawable/google"/>
 
-        <ImageView
-            android:id="@+id/imv_facebook"
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/btn_facebook"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_margin="20dp"
