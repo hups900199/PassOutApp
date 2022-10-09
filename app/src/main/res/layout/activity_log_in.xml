@@ -16,7 +16,7 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="10dp"
         android:background="#95ffffff"
-        android:drawableLeft="@drawable/ic_baseline_person_24"
+        android:drawableLeft="@drawable/ic_baseline_email_24"
         android:drawablePadding="20dp"
         android:hint="Email"
         android:padding="20dp"
@@ -50,60 +50,78 @@
             android:textColorHint="#000" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_login"
+    <TextView
+        android:id="@+id/txv_forget_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
         android:layout_below="@id/layout_password"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="20dp"
+        android:text="Forget Password?"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_password"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
         android:backgroundTint="#4AB806"
         android:text="LOGIN" />
 
     <TextView
+        android:id="@+id/txv_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/register"
-        android:layout_below="@id/btn_login"
-        android:text="Register Now"
-        android:textColor="@color/black"
+        android:layout_above="@id/txv_others"
         android:layout_centerHorizontal="true"
-        android:layout_margin="30dp"/>
+        android:layout_margin="15dp"
+        android:text="Register Now"
+        android:textColor="@color/black"/>
 
     <TextView
+        android:id="@+id/txv_others"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/others"
-        android:layout_above="@id/txv_social_icons"
-        android:text="or sign in with"
-        android:layout_centerHorizontal="true"/>
+        android:layout_above="@id/imv_google"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:text="or sign in with" />
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/imv_google"
         android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_above="@id/btn_facebook"
+        android:layout_marginBottom="15dp"
+        android:src="@drawable/google_sign_in" />
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/btn_facebook"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/txv_social_icons"
         android:layout_alignParentBottom="true"
-        android:gravity="center">
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:src="@drawable/fb" />
 
-        <ImageView
-            android:id="@+id/imv_google"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_margin="20dp"
-            android:src="@drawable/google"/>
 
-        <com.facebook.login.widget.LoginButton
-            android:id="@+id/btn_facebook"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_margin="20dp"
-            android:src="@drawable/fb"/>
 
-        <ImageView
-            android:id="@+id/imv_twitter"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_margin="20dp"
-            android:src="@drawable/twitter"/>
-    </LinearLayout>
+<!--    <LinearLayout-->
+<!--        android:id="@+id/txv_social_icons"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:gravity="center">-->
+<!--        -->
+<!--        <ImageView-->
+<!--            android:id="@+id/imv_twitter"-->
+<!--            android:layout_width="48dp"-->
+<!--            android:layout_height="48dp"-->
+<!--            android:layout_margin="20dp"-->
+<!--            android:src="@drawable/twitter" />-->
+<!--    </LinearLayout>-->
 </RelativeLayout>

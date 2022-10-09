@@ -83,7 +83,7 @@ class LogInActivity : AppCompatActivity() {
         }
 
         // Handles register TextView event.
-        binding.register.setOnClickListener {
+        binding.txvRegister.setOnClickListener {
             goToActivity(this, SignUpActivity::class.java)
         }
     }
