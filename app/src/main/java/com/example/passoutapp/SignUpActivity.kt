@@ -40,7 +40,7 @@ class SignUpActivity : AppCompatActivity() {
 
         // Handles sign in TextView event.
         binding.txvSignIn.setOnClickListener {
-            goToActivity(this, LogInActivity::class.java)
+            finish()
         }
     }
 

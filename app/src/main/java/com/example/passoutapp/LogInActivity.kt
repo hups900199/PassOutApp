@@ -84,12 +84,12 @@ class LogInActivity : AppCompatActivity() {
 
         // Handles forget password TextView event.
         binding.txvForgetPassword.setOnClickListener {
-            goToActivity(this, ForgetPasswordActivity::class.java)
+            startActivity(Intent(this, ForgetPasswordActivity::class.java))
         }
 
         // Handles register TextView event.
         binding.txvRegister.setOnClickListener {
-            goToActivity(this, SignUpActivity::class.java)
+            startActivity(Intent(this, SignUpActivity::class.java))
         }
     }
 
