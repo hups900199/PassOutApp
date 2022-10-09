@@ -6,18 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.example.passoutapp.databinding.ActivityForgetPasswordBinding
-import com.example.passoutapp.databinding.ActivityLogInBinding
-import com.facebook.CallbackManager
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseAuth
 
 class ForgetPasswordActivity : AppCompatActivity() {
 
     // Sets view binding.
     private lateinit var binding: ActivityForgetPasswordBinding
-    private lateinit var googleSignInClient: GoogleSignInClient
-    private lateinit var firebaseAuth: FirebaseAuth
-    private lateinit var callbackManager: CallbackManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
