@@ -82,6 +82,11 @@ class LogInActivity : AppCompatActivity() {
             facebookSignIn()
         }
 
+        // Handles forget password TextView event.
+        binding.txvForgetPassword.setOnClickListener {
+            goToActivity(this, ForgetPasswordActivity::class.java)
+        }
+
         // Handles register TextView event.
         binding.txvRegister.setOnClickListener {
             goToActivity(this, SignUpActivity::class.java)
