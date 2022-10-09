@@ -57,6 +57,8 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="20dp"
         android:layout_below="@id/layout_password"
+        android:background="#ff8700"
+        android:textColor="@color/white"
         android:text="Forget Password?"/>
 
     <com.google.android.material.button.MaterialButton
@@ -79,6 +81,7 @@
         android:layout_above="@id/txv_others"
         android:layout_centerHorizontal="true"
         android:layout_margin="15dp"
+        android:background="#fefc87"
         android:text="Register Now"
         android:textColor="@color/black"/>
 
@@ -105,7 +108,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="15dp"
         android:src="@drawable/fb" />
 
 
