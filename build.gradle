@@ -3,7 +3,8 @@ buildscript {
         classpath 'com.google.gms:google-services:4.3.14'
     }
     repositories {
-        mavenCentral()
+        google()  // Google's Maven repository
+        mavenCentral()  // Maven Central repository
     }
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {

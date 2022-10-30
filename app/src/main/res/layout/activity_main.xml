@@ -6,6 +6,18 @@
     android:background="@drawable/background_yellow"
     tools:context=".MainActivity">
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:backgroundTint="#4AB806"
+        android:text="Setting" />
+
     <TextView
         android:id="@+id/txv_email"
         android:layout_width="wrap_content"
