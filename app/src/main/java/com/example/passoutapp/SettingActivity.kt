@@ -37,7 +37,7 @@ class SettingActivity : AppCompatActivity() {
 
         retrieveUserData(firebaseAuth.uid.toString())
 
-        // Create an ArrayAdapter using a simple spinner layout and languages array
+        // Create an ArrayAdapter using a simple spinner layout and GENDERS array
         val arrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, GENDERS)
         // Set layout to use when the list of choices appear
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -53,13 +53,13 @@ class SettingActivity : AppCompatActivity() {
             val height = binding.edtHeight.text.toString().trim().toDouble()
             val gender = binding.spnGender.selectedItem.toString().trim()
 
-            Log.d(STORE_TAG, "UID: ${uid}")
-            Log.d(STORE_TAG, "Username: ${username}")
-            Log.d(STORE_TAG, "Weight: ${weight}")
-            Log.d(STORE_TAG, "Height: ${height}")
-            Log.d(STORE_TAG, "Gender: ${gender}")
+            Log.d(STORE_TAG, "UID: $uid")
+            Log.d(STORE_TAG, "Username: $username")
+            Log.d(STORE_TAG, "Weight: $weight")
+            Log.d(STORE_TAG, "Height: $height")
+            Log.d(STORE_TAG, "Gender: $gender")
 
-            if (!uid.isEmpty() && !username.isEmpty()) {
+            if (uid.isNotEmpty() && username.isNotEmpty() && !weight.isNaN() && !height.isNaN()) {
                 saveFireStore(uid, username, weight, height, gender)
             } else {
                 Toast.makeText(this, "Username cannot be empty.", Toast.LENGTH_SHORT).show()
@@ -78,20 +78,13 @@ class SettingActivity : AppCompatActivity() {
         }
 
         binding.btnCancel.setOnClickListener {
-            goToActivity(this, MainActivity::class.java)
+            this.finish()
         }
 
         readFireStoreData()
     }
 
-    // Method: Redirects to an activity.
-    private fun goToActivity(activity: Activity, classes: Class<*>?) {
-        val intent = Intent(activity, classes)
-        startActivity(intent)
-        activity.finish()
-    }
-
-    fun saveFireStore(uid: String, username: String, weight: Double, height: Double, gender: String) {
+    private fun saveFireStore(uid: String, username: String, weight: Double, height: Double, gender: String) {
         val items = HashMap<String, Any>()
         items.put("uid", uid)
         items.put("username", username)
@@ -145,6 +138,7 @@ class SettingActivity : AppCompatActivity() {
             }
     }
 
+    // Method: Retrieve user information from database.
     private fun retrieveUserData(uid: String) {
         val docRef = db.collection("users").document(uid)
 

@@ -41,6 +41,11 @@ class MainActivity : AppCompatActivity() {
         binding.btnSetting.setOnClickListener {
             startActivity(Intent(this, SettingActivity::class.java))
         }
+
+        // Handles alcohol Button event.
+        binding.btnAlcohol.setOnClickListener {
+            startActivity(Intent(this, AlcoholActivity::class.java))
+        }
     }
 
     // Method: Redirects to an activity.
@@ -71,6 +76,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // Method: Retrieve user information from database.
     private fun retrieveUserData(uid: String) {
         val docRef = db.collection("users").document(uid)
 

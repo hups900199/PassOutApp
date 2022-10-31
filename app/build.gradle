@@ -53,4 +53,10 @@ dependencies {
 
     // Import the BoM for the Firebase platform
     implementation platform('com.google.firebase:firebase-bom:30.5.0')
+
+    //noinspection GradleCompatible
+    implementation 'com.android.support:cardview-v7:28.0.0'
+
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+
 }
