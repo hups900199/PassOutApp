@@ -35,15 +35,14 @@ class SettingActivity : AppCompatActivity() {
         db = FirebaseFirestore.getInstance()
 //        dbHandler = DBHandler(this);
 
-        // Reading
-//        binding.spnGender.setSelection()
+        retrieveUserData(firebaseAuth.uid.toString())
 
         // Create an ArrayAdapter using a simple spinner layout and languages array
         val arrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, GENDERS)
         // Set layout to use when the list of choices appear
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         // Set Adapter to Spinner
-        binding.spnGender!!.setAdapter(arrayAdapter)
+        binding.spnGender.adapter = arrayAdapter
 
         binding.btnUpdate.setOnClickListener {
             Log.d(STORE_TAG, "Retrieve Inputs")
@@ -60,9 +59,11 @@ class SettingActivity : AppCompatActivity() {
             Log.d(STORE_TAG, "Height: ${height}")
             Log.d(STORE_TAG, "Gender: ${gender}")
 
-            if (!uid.isEmpty() && !username.isEmpty())
-
-            saveFireStore(uid, username, weight, height, gender)
+            if (!uid.isEmpty() && !username.isEmpty()) {
+                saveFireStore(uid, username, weight, height, gender)
+            } else {
+                Toast.makeText(this, "Username cannot be empty.", Toast.LENGTH_SHORT).show()
+            }
 
 //            val myRef = db.getReference()
 //            val gender = gender_model("male")
@@ -91,10 +92,6 @@ class SettingActivity : AppCompatActivity() {
     }
 
     fun saveFireStore(uid: String, username: String, weight: Double, height: Double, gender: String) {
-//        val user: MutableMap<String, Any> = HashMap()
-//        user["uid"] = uid
-//        user["height"] = height
-
         val items = HashMap<String, Any>()
         items.put("uid", uid)
         items.put("username", username)
@@ -102,7 +99,11 @@ class SettingActivity : AppCompatActivity() {
         items.put("height", height)
         items.put("gender", gender)
 
-        db.collection("Users")
+//        val user: MutableMap<String, Any> = HashMap()
+//        user["uid"] = uid
+//        user["height"] = height
+
+        db.collection("users")
             .document(uid)
             .set(items)
             .addOnSuccessListener {
@@ -124,8 +125,8 @@ class SettingActivity : AppCompatActivity() {
 //                }
     }
 
-    fun readFireStoreData() {
-        db.collection("Users")
+    private fun readFireStoreData() {
+        db.collection("users")
             .get()
             .addOnCompleteListener {
                 val result: StringBuffer = StringBuffer()
@@ -139,8 +140,27 @@ class SettingActivity : AppCompatActivity() {
                             .append(document.data.getValue("gender"))
                     }
 
-                    binding.txvOutput.setText(result)
+                    binding.txvOutput.text = result
                 }
             }
+    }
+
+    private fun retrieveUserData(uid: String) {
+        val docRef = db.collection("users").document(uid)
+
+        docRef.get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // Document found in the offline cache
+                val document = task.result
+                Log.d(STORE_TAG, "Existed account: ${document?.data}")
+
+                binding.edtUsername.setText(document.data?.getValue("username").toString())
+                binding.edtWeight.setText(document.data?.getValue("weight").toString())
+                binding.edtHeight.setText(document.data?.getValue("height").toString())
+                binding.spnGender.setSelection(GENDERS.indexOf(document.data?.getValue("gender").toString()))
+            } else {
+                Log.d(STORE_TAG, "New account: ", task.exception)
+            }
+        }
     }
 }

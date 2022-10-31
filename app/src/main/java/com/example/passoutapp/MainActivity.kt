@@ -7,12 +7,19 @@ import android.os.Bundle
 import android.util.Log
 import com.example.passoutapp.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
 
     // Sets view binding.
     private lateinit var binding: ActivityMainBinding
     private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
+
+    // Constants
+    private companion object {
+        private const val STORE_TAG = "FIRESTORE_TAG"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +28,7 @@ class MainActivity : AppCompatActivity() {
 
         // Init firebase auth.
         firebaseAuth = FirebaseAuth.getInstance()
+        db = FirebaseFirestore.getInstance()
         checkUser()
 
         // Handles sign out Button event.
@@ -54,10 +62,36 @@ class MainActivity : AppCompatActivity() {
             // User logged in.
             // Gets user info.
             val email = firebaseUser.email
-            Log.d("DATABASE", "UID:... ${firebaseUser.uid}")
+            val uid = firebaseUser.uid
 
             // Sets email address.
             binding.txvEmail.text = email
+
+            retrieveUserData(uid)
+        }
+    }
+
+    private fun retrieveUserData(uid: String) {
+        val docRef = db.collection("users").document(uid)
+
+        docRef.get().addOnCompleteListener { task ->
+            val result: StringBuffer = StringBuffer()
+
+            if (task.isSuccessful) {
+                // Document found in the offline cache
+                val document = task.result
+                Log.d(STORE_TAG, "Existed account: ${document?.data}")
+
+                result.append("UID: ").append(uid).append("\n")
+                    .append("Username: ").append(document.data?.getValue("username")).append("\n")
+                    .append("Weight(kg): ").append(document.data?.getValue("weight")).append("\n")
+                    .append("Height(cm): ").append(document.data?.getValue("height")).append("\n")
+                    .append("Gender: ").append(document.data?.getValue("gender"))
+
+                binding.txvUserInfo.text = result
+            } else {
+                Log.d(STORE_TAG, "New account: ", task.exception)
+            }
         }
     }
 }
