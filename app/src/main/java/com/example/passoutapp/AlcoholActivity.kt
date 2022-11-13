@@ -2,15 +2,14 @@ package com.example.passoutapp
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.passoutapp.databinding.ActivityAlcoholBinding
-import com.example.passoutapp.databinding.ActivitySettingBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.util.*
 
 class AlcoholActivity : AppCompatActivity() {
 
@@ -36,45 +35,21 @@ class AlcoholActivity : AppCompatActivity() {
         firebaseAuth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
+        // Initialize recycler view.
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.setHasFixedSize(true)
+        newArrayList = arrayListOf<Alcohols>()
+        imageId = arrayOf(
+            R.drawable.google,
+            R.drawable.fb
+        )
+
         // Handles alcohol Button event.
         binding.btnAddAlcohol.setOnClickListener {
             startActivity(Intent(this, AddAlcoholActivity::class.java))
         }
 
         retrieveUserData(firebaseAuth.uid.toString())
-
-
-
-
-        imageId = arrayOf(
-            R.drawable.google,
-            R.drawable.fb
-        )
-
-        heading = arrayOf(
-            "First Item abasdfewrqewr here",
-            "Seacond adjsifoewjqior"
-        )
-
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        binding.recyclerView.setHasFixedSize(true)
-
-        newArrayList = arrayListOf<Alcohols>()
-        //getData()
-
-
-
-
-
-    }
-
-    private fun getData() {
-        for (i in imageId.indices ) {
-            val alcohols = Alcohols(imageId[i], heading[i])
-            newArrayList.add(alcohols)
-        }
-
-        binding.recyclerView.adapter = AlcoholAdapter(newArrayList)
     }
 
     // Method: Redirects to an activity.
@@ -98,7 +73,15 @@ class AlcoholActivity : AppCompatActivity() {
                 for (document in documents) {
                     Log.d(STORE_TAG, "${document.id} => ${document.data}")
 
-                    val alcohols = Alcohols(imageId[1], document.data["liter"].toString())
+                    val alcohols = Alcohols(
+                        imageId[1],
+                        document.data["alcoholName"].toString(),
+                        document.data["alcoholType"].toString(),
+                        document.data["alcoholPercentage"] as Double,
+                        document.data["liter"] as Double,
+                        Date().toString()
+                    )
+
                     newArrayList.add(alcohols)
                 }
 

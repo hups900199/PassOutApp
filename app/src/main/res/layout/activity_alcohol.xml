@@ -21,6 +21,6 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
-        android:layout_width="278dp"
-        android:layout_height="478dp" />
+        android:layout_width="match_parent"
+        android:layout_height="640dp" />
 </RelativeLayout>

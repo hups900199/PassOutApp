@@ -6,9 +6,9 @@
     android:layout_margin="8dp">
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/title_image"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:id="@+id/imv_alcohol"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_baseline_opacity_24"
@@ -17,26 +17,86 @@
         app:shapeAppearanceOverlay="@style/RoundCorner"/>
 
     <TextView
-        android:id="@+id/tvHeading"
+        android:id="@+id/txv_alcohol_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
-        android:text="First Item is here"
+        android:text="alcohol_name"
         android:textSize="16dp"
         android:textStyle="bold"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="32dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/title_image"
+        app:layout_constraintStart_toEndOf="@+id/imv_alcohol"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txv_alcohol_type"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="alcohol_type"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imv_alcohol"
+        app:layout_constraintTop_toTopOf="@+id/txv_alcohol_name"/>
+
+    <TextView
+        android:id="@+id/txv_alcohol_percentage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="alcohol_percentage"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imv_alcohol"
+        app:layout_constraintTop_toTopOf="@+id/txv_alcohol_type"/>
+
+    <TextView
+        android:id="@+id/txv_liter"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="liter"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imv_alcohol"
+        app:layout_constraintTop_toTopOf="@+id/txv_alcohol_percentage"/>
+
+    <TextView
+        android:id="@+id/txv_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="date"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imv_alcohol"
+        app:layout_constraintTop_toTopOf="@+id/txv_liter"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_margin="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_image"
+        app:layout_constraintTop_toBottomOf="@+id/imv_alcohol"
         android:background="@color/underline" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

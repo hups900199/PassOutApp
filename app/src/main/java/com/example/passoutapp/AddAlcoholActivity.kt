@@ -8,8 +8,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.passoutapp.databinding.ActivityAddAlcoholBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 class AddAlcoholActivity : AppCompatActivity() {
 
@@ -56,7 +58,8 @@ class AddAlcoholActivity : AppCompatActivity() {
             Log.d(STORE_TAG, "Liter: $liter")
 
             if (uid.isNotEmpty() && !alcoholPercentage.isNaN() && !liter.isNaN()) {
-                saveAlcohol(uid, alcoholName, alcoholType, alcoholPercentage, liter)
+                val date = Date()
+                saveAlcohol(uid, alcoholName, alcoholType, alcoholPercentage, liter, date)
             } else {
                 Toast.makeText(this, "Username cannot be empty.", Toast.LENGTH_SHORT).show()
             }
@@ -69,14 +72,21 @@ class AddAlcoholActivity : AppCompatActivity() {
         retrieveUserData(firebaseAuth.uid.toString())
     }
 
-    private fun saveAlcohol(uid: String, alcoholName: String, alcoholType: String, alcoholPercentage: Double, liter: Double) {
+    private fun saveAlcohol(uid: String,
+                            alcoholName: String,
+                            alcoholType: String,
+                            alcoholPercentage: Double,
+                            liter: Double,
+                            date: Date)
+    {
+        val dateFormat: DateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
         val items = HashMap<String, Any>()
         items.put("uid", uid)
         items.put("alcoholName", alcoholName)
         items.put("alcoholType", alcoholType)
         items.put("alcoholPercentage", alcoholPercentage)
         items.put("liter", liter)
-        items.put("date", FieldValue.serverTimestamp())
+        items.put("date", dateFormat.format(date))
 
 //        val user: MutableMap<String, Any> = HashMap()
 //        user["uid"] = uid
