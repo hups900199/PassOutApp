@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.passoutapp.databinding.ActivityMainBinding
 import com.example.passoutapp.databinding.ActivitySettingBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -78,7 +79,7 @@ class SettingActivity : AppCompatActivity() {
         }
 
         binding.btnCancel.setOnClickListener {
-            this.finish()
+            goToActivity(this, MainActivity::class.java)
         }
 
         readFireStoreData()
@@ -116,6 +117,13 @@ class SettingActivity : AppCompatActivity() {
 //                }.addOnFailureListener{
 //                    Log.d("DATABASE", "Failed created... ${uid}\n")
 //                }
+    }
+
+    // Method: Redirects to an activity.
+    private fun goToActivity(activity: Activity, classes: Class<*>?) {
+        val intent = Intent(activity, classes)
+        startActivity(intent)
+        activity.finish()
     }
 
     private fun readFireStoreData() {

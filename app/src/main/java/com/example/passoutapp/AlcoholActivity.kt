@@ -5,6 +5,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.passoutapp.databinding.ActivityAlcoholBinding
 import com.example.passoutapp.databinding.ActivitySettingBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -16,6 +18,9 @@ class AlcoholActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAlcoholBinding
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
+    private lateinit var newArrayList: ArrayList<Alcohols>
+    lateinit var imageId : Array<Int>
+    lateinit var heading : Array<String>
 
     // Constants
     private companion object {
@@ -37,6 +42,39 @@ class AlcoholActivity : AppCompatActivity() {
         }
 
         retrieveUserData(firebaseAuth.uid.toString())
+
+
+
+
+        imageId = arrayOf(
+            R.drawable.google,
+            R.drawable.fb
+        )
+
+        heading = arrayOf(
+            "First Item abasdfewrqewr here",
+            "Seacond adjsifoewjqior"
+        )
+
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.setHasFixedSize(true)
+
+        newArrayList = arrayListOf<Alcohols>()
+        //getData()
+
+
+
+
+
+    }
+
+    private fun getData() {
+        for (i in imageId.indices ) {
+            val alcohols = Alcohols(imageId[i], heading[i])
+            newArrayList.add(alcohols)
+        }
+
+        binding.recyclerView.adapter = AlcoholAdapter(newArrayList)
     }
 
     // Method: Redirects to an activity.
@@ -59,7 +97,12 @@ class AlcoholActivity : AppCompatActivity() {
             .addOnSuccessListener { documents ->
                 for (document in documents) {
                     Log.d(STORE_TAG, "${document.id} => ${document.data}")
+
+                    val alcohols = Alcohols(imageId[1], document.data["liter"].toString())
+                    newArrayList.add(alcohols)
                 }
+
+                binding.recyclerView.adapter = AlcoholAdapter(newArrayList)
             }
             .addOnFailureListener { exception ->
                 Log.w(STORE_TAG, "Error getting documents: ", exception)

@@ -19,7 +19,8 @@
         android:backgroundTint="#4AB806"
         android:text="Add Alcohol" />
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="278dp"
+        android:layout_height="478dp" />
 </RelativeLayout>

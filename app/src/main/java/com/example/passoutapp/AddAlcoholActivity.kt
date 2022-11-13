@@ -1,13 +1,12 @@
 package com.example.passoutapp
 
 import android.R
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.passoutapp.databinding.ActivityAddAlcoholBinding
-import com.example.passoutapp.databinding.ActivityAlcoholBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
