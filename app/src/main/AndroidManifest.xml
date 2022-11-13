@@ -18,6 +18,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".UpdateAlcoholActivity"
+            android:exported="false" />
+        <activity
             android:name=".AddAlcoholActivity"
             android:exported="false" />
         <activity

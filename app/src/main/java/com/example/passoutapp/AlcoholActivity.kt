@@ -5,7 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.passoutapp.databinding.ActivityAlcoholBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -19,7 +21,6 @@ class AlcoholActivity : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
     private lateinit var newArrayList: ArrayList<Alcohols>
     lateinit var imageId : Array<Int>
-    lateinit var heading : Array<String>
 
     // Constants
     private companion object {
@@ -40,8 +41,9 @@ class AlcoholActivity : AppCompatActivity() {
         binding.recyclerView.setHasFixedSize(true)
         newArrayList = arrayListOf<Alcohols>()
         imageId = arrayOf(
-            R.drawable.google,
-            R.drawable.fb
+            R.drawable.beer,
+            R.drawable.ic_baseline_wine_bar_24,
+            R.drawable.ic_baseline_question_mark_24
         )
 
         // Handles alcohol Button event.
@@ -73,22 +75,63 @@ class AlcoholActivity : AppCompatActivity() {
                 for (document in documents) {
                     Log.d(STORE_TAG, "${document.id} => ${document.data}")
 
+                    var typeNumber = 2
+                    if (document.data["alcoholType"].toString() == "Beer") typeNumber = 0
+                    if (document.data["alcoholType"].toString() == "Wine") typeNumber = 1
+
                     val alcohols = Alcohols(
-                        imageId[1],
+                        document.id,
+                        imageId[typeNumber],
                         document.data["alcoholName"].toString(),
                         document.data["alcoholType"].toString(),
                         document.data["alcoholPercentage"] as Double,
                         document.data["liter"] as Double,
-                        Date().toString()
+                        document.data["date"].toString()
                     )
 
                     newArrayList.add(alcohols)
                 }
 
-                binding.recyclerView.adapter = AlcoholAdapter(newArrayList)
+                val adapter = AlcoholAdapter(newArrayList)
+
+                val swipeToDeleteCallback = object : SwipeToDeleteCallback() {
+                    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                        val position = viewHolder.adapterPosition
+                        db.collection("alcohols").document(newArrayList.get(position).id)
+                            .delete()
+                            .addOnSuccessListener {
+                                Log.d(STORE_TAG, "DocumentSnapshot successfully deleted!")
+                                newArrayList.removeAt(position)
+                                binding.recyclerView.adapter?.notifyItemRemoved(position)
+                            }
+                            .addOnFailureListener { e -> Log.w(STORE_TAG, "Error deleting document", e) }
+                    }
+                }
+
+                val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
+
+                itemTouchHelper.attachToRecyclerView(binding.recyclerView)
+
+//                val swipeGesture = object : SwipeGesture() {
+//                    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+//                        when(direction) {
+//                            ItemTouchHelper.LEFT -> {
+//                                adapter.deleteItem(viewHolder.adapterPosition)
+//                            }
+//
+//                            ItemTouchHelper.RIGHT -> {
+//
+//                            }
+//                        }
+//
+//                        super.onSwiped(viewHolder, direction)
+//                    }
+//                }
+
+                binding.recyclerView.adapter = adapter
             }
             .addOnFailureListener { exception ->
-                Log.w(STORE_TAG, "Error getting documents: ", exception)
+                Log.d(STORE_TAG, "Error getting documents: ", exception)
             }
     }
 }
