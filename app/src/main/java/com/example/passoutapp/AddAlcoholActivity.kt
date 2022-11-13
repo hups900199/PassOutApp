@@ -1,6 +1,7 @@
 package com.example.passoutapp
 
 import android.R
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
@@ -60,6 +61,7 @@ class AddAlcoholActivity : AppCompatActivity() {
             if (uid.isNotEmpty() && !alcoholPercentage.isNaN() && !liter.isNaN()) {
                 val date = Date()
                 saveAlcohol(uid, alcoholName, alcoholType, alcoholPercentage, liter, date)
+                finish();
             } else {
                 Toast.makeText(this, "Username cannot be empty.", Toast.LENGTH_SHORT).show()
             }
@@ -68,8 +70,6 @@ class AddAlcoholActivity : AppCompatActivity() {
         binding.btnCancel.setOnClickListener {
             this.finish()
         }
-
-        retrieveUserData(firebaseAuth.uid.toString())
     }
 
     private fun saveAlcohol(uid: String,
@@ -88,10 +88,6 @@ class AddAlcoholActivity : AppCompatActivity() {
         items.put("liter", liter)
         items.put("date", dateFormat.format(date))
 
-//        val user: MutableMap<String, Any> = HashMap()
-//        user["uid"] = uid
-//        user["height"] = height
-
         db.collection("alcohols")
             .add(items)
             .addOnSuccessListener {
@@ -99,28 +95,6 @@ class AddAlcoholActivity : AppCompatActivity() {
             }
             .addOnFailureListener {
                 Toast.makeText(this, "Add alcohol failed", Toast.LENGTH_SHORT).show()
-            }
-
-        retrieveUserData(uid)
-    }
-
-    // Method: Retrieve user information from database.
-    private fun retrieveUserData(uid: String) {
-
-        // Create a reference to the cities collection
-        val alcoholsRef = db.collection("alcohols")
-
-        // Create a query against the collection.
-        val query = alcoholsRef.whereEqualTo("uid", uid)
-
-        query.get()
-            .addOnSuccessListener { documents ->
-                for (document in documents) {
-                    Log.d(STORE_TAG, "${document.id} => ${document.data}")
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.w(STORE_TAG, "Error getting documents: ", exception)
             }
     }
 }

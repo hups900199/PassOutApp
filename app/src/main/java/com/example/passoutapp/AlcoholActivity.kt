@@ -99,12 +99,11 @@ class AlcoholActivity : AppCompatActivity() {
                         val position = viewHolder.adapterPosition
                         db.collection("alcohols").document(newArrayList.get(position).id)
                             .delete()
-                            .addOnSuccessListener {
-                                Log.d(STORE_TAG, "DocumentSnapshot successfully deleted!")
-                                newArrayList.removeAt(position)
-                                binding.recyclerView.adapter?.notifyItemRemoved(position)
-                            }
+                            .addOnSuccessListener { Log.d(STORE_TAG, "DocumentSnapshot successfully deleted!") }
                             .addOnFailureListener { e -> Log.w(STORE_TAG, "Error deleting document", e) }
+
+                        newArrayList.removeAt(position)
+                        binding.recyclerView.adapter?.notifyItemRemoved(position)
                     }
                 }
 
