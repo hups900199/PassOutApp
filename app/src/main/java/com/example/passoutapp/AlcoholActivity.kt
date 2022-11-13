@@ -51,6 +51,12 @@ class AlcoholActivity : AppCompatActivity() {
             startActivity(Intent(this, AddAlcoholActivity::class.java))
         }
 
+        // Handles refresh Button event.
+        binding.btnRefresh.setOnClickListener {
+            finish()
+            startActivity(getIntent())
+        }
+
         retrieveUserData(firebaseAuth.uid.toString())
     }
 
