@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.imageview.ShapeableImageView
 import java.util.*
@@ -61,7 +60,8 @@ class AlcoholAdapter(private val alcoholsList: ArrayList<Alcohols>) : RecyclerVi
         holder.txv_alcohol_type.text = String.format(Locale.CANADA, "Type: %s", currentItem.type)
         holder.txv_alcohol_percentage.text = String.format(Locale.CANADA, "Percentage: %.02f %%", currentItem.percentage)
         holder.txv_liter.text = String.format(Locale.CANADA, "Liter: %.02f", currentItem.liter)
-        holder.txv_date.text = String.format(Locale.CANADA, "Date: %s", currentItem.date)
+        holder.txv_create_date.text = String.format(Locale.CANADA, "Create: %s", currentItem.createDate)
+        holder.txv_update_date.text = String.format(Locale.CANADA, "Update: %s", currentItem.updateDate)
     }
 
     override fun getItemCount(): Int {
@@ -74,6 +74,7 @@ class AlcoholAdapter(private val alcoholsList: ArrayList<Alcohols>) : RecyclerVi
         val txv_alcohol_type : TextView = itemView.findViewById(R.id.txv_alcohol_type)
         val txv_alcohol_percentage : TextView = itemView.findViewById(R.id.txv_alcohol_percentage)
         val txv_liter : TextView = itemView.findViewById(R.id.txv_liter)
-        val txv_date : TextView = itemView.findViewById(R.id.txv_date)
+        val txv_create_date : TextView = itemView.findViewById(R.id.txv_create_date)
+        val txv_update_date : TextView = itemView.findViewById(R.id.txv_update_date)
     }
 }

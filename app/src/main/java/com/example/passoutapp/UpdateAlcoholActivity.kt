@@ -114,7 +114,7 @@ class UpdateAlcoholActivity : AppCompatActivity() {
         items.put("alcoholType", alcoholType)
         items.put("alcoholPercentage", alcoholPercentage)
         items.put("liter", liter)
-        items.put("date", dateFormat.format(date))
+        items.put("updateDate", dateFormat.format(date))
 
         db.collection("alcohols").document(selectedId)
             .update(items)

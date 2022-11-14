@@ -9,5 +9,6 @@ data class Alcohols(
     var type : String,
     var percentage : Double,
     var liter : Double,
-    var date: String
+    var createDate: String,
+    var updateDate: String
     )

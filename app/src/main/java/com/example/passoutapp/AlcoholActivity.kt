@@ -92,7 +92,8 @@ class AlcoholActivity : AppCompatActivity() {
                         document.data["alcoholType"].toString(),
                         document.data["alcoholPercentage"] as Double,
                         document.data["liter"] as Double,
-                        document.data["date"].toString()
+                        document.data["createDate"].toString(),
+                        document.data["updateDate"].toString()
                     )
 
                     newArrayList.add(alcohols)

@@ -86,7 +86,8 @@ class AddAlcoholActivity : AppCompatActivity() {
         items.put("alcoholType", alcoholType)
         items.put("alcoholPercentage", alcoholPercentage)
         items.put("liter", liter)
-        items.put("date", dateFormat.format(date))
+        items.put("createDate", dateFormat.format(date))
+        items.put("updateDate", dateFormat.format(date))
 
         db.collection("alcohols")
             .add(items)

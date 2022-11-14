@@ -7,8 +7,8 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imv_alcohol"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_baseline_opacity_24"
@@ -77,11 +77,11 @@
         app:layout_constraintTop_toTopOf="@+id/txv_alcohol_percentage"/>
 
     <TextView
-        android:id="@+id/txv_date"
+        android:id="@+id/txv_create_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
-        android:text="date"
+        android:text="create_date"
         android:textSize="16dp"
         android:textStyle="bold"
         android:layout_marginStart="16dp"
@@ -90,6 +90,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imv_alcohol"
         app:layout_constraintTop_toTopOf="@+id/txv_liter"/>
+
+    <TextView
+        android:id="@+id/txv_update_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="update_date"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imv_alcohol"
+        app:layout_constraintTop_toTopOf="@+id/txv_create_date"/>
 
     <View
         android:layout_width="match_parent"
