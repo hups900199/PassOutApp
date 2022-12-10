@@ -5,11 +5,17 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
+import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
 import com.example.passoutapp.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
+
+    // Menu toggle
+    lateinit var toggle: ActionBarDrawerToggle
 
     // Sets view binding.
     private lateinit var binding: ActivityMainBinding
@@ -25,6 +31,24 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Menu
+        toggle = ActionBarDrawerToggle(this, binding.drawerLayout, R.string.open, R.string.close)
+        binding.drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        binding.navView.setNavigationItemSelectedListener {
+            when(it.itemId) {
+                R.id.nav_home -> Toast.makeText(applicationContext, "Click Home", Toast.LENGTH_SHORT).show()
+                R.id.nav_history -> Toast.makeText(applicationContext, "Click History", Toast.LENGTH_SHORT).show()
+                R.id.nav_setting -> Toast.makeText(applicationContext, "Click Setting", Toast.LENGTH_SHORT).show()
+                R.id.nav_sign_out -> Toast.makeText(applicationContext, "Click Sign Out", Toast.LENGTH_SHORT).show()
+            }
+
+            true
+        }
 
         // Init firebase auth.
         firebaseAuth = FirebaseAuth.getInstance()
@@ -88,8 +112,7 @@ class MainActivity : AppCompatActivity() {
                 val document = task.result
                 Log.d(STORE_TAG, "Existed account: ${document?.data}")
 
-                result.append("UID: ").append(uid).append("\n")
-                    .append("Username: ").append(document.data?.getValue("username")).append("\n")
+                result.append("Username: ").append(document.data?.getValue("username")).append("\n")
                     .append("Weight(kg): ").append(document.data?.getValue("weight")).append("\n")
                     .append("Height(cm): ").append(document.data?.getValue("height")).append("\n")
                     .append("Gender: ").append(document.data?.getValue("gender"))
@@ -99,5 +122,12 @@ class MainActivity : AppCompatActivity() {
                 Log.d(STORE_TAG, "New account: ", task.exception)
             }
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (toggle.onOptionsItemSelected(item)) {
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

@@ -7,7 +7,6 @@ import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.passoutapp.databinding.ActivityMainBinding
 import com.example.passoutapp.databinding.ActivitySettingBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -18,7 +17,6 @@ class SettingActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySettingBinding
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
-//    private var dbHandler: DBHandler? = null
 
     // Constants
     private companion object {
@@ -34,7 +32,6 @@ class SettingActivity : AppCompatActivity() {
         // Init firebase auth.
         firebaseAuth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
-//        dbHandler = DBHandler(this);
 
         retrieveUserData(firebaseAuth.uid.toString())
 
@@ -65,17 +62,6 @@ class SettingActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Username cannot be empty.", Toast.LENGTH_SHORT).show()
             }
-
-//            val myRef = db.getReference()
-//            val gender = gender_model("male")
-//            myRef.child("SADFEWERS").setValue(gender)
-//                .addOnSuccessListener {
-//                    Log.d("DATABASE", "Account created... ${uid}\n")
-//                }.addOnFailureListener{
-//                    Log.d("DATABASE", "Failed created... ${uid}\n")
-//                }
-
-//            dbHandler!!.addNewCourse("courseName", "courseDuration", "courseDescription", "courseTracks");
         }
 
         binding.btnCancel.setOnClickListener {
