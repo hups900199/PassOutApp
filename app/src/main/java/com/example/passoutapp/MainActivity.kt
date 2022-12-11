@@ -6,12 +6,17 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.passoutapp.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.util.ArrayList
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,8 +25,10 @@ class MainActivity : AppCompatActivity() {
 
     // Sets view binding.
     private lateinit var binding: ActivityMainBinding
+    private lateinit var newArrayList: ArrayList<Alcohols>
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
+    lateinit var imageId : Array<Int>
 
     // Constants
     private companion object {
@@ -33,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Menu
+        // Initialize Menu
         toggle = ActionBarDrawerToggle(this, binding.drawerLayout, R.string.open, R.string.close)
         binding.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
@@ -61,9 +68,37 @@ class MainActivity : AppCompatActivity() {
         db = FirebaseFirestore.getInstance()
         checkUser()
 
+        // Initialize recycler view.
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.setHasFixedSize(true)
+        newArrayList = arrayListOf<Alcohols>()
+        imageId = arrayOf(
+            R.drawable.beer,
+            R.drawable.ic_baseline_wine_bar_24,
+            R.drawable.ic_baseline_question_mark_24
+        )
+
+        // Handles start Button event.
+        binding.btnStart.setOnClickListener {
+            binding.btnStart.setVisibility(View.INVISIBLE); //HIDE the button
+            binding.drinkingLayout.setVisibility(View.VISIBLE); //SHOW the layout
+        }
+
         // Handles alcohol Button event.
-        binding.btnAlcohol.setOnClickListener {
-            startActivity(Intent(this, AlcoholActivity::class.java))
+        binding.btnAddAlcohol.setOnClickListener {
+            startActivity(Intent(this, AddAlcoholActivity::class.java))
+        }
+
+        // Handles refresh Button event.
+        binding.btnRefresh.setOnClickListener {
+            finish()
+            startActivity(getIntent())
+        }
+
+        // Handles pass out Button event.
+        binding.btnPassOut.setOnClickListener{
+            binding.btnStart.setVisibility(View.VISIBLE); //SHOW the button
+            binding.drinkingLayout.setVisibility(View.INVISIBLE); //HIDE the layout
         }
     }
 
@@ -92,6 +127,7 @@ class MainActivity : AppCompatActivity() {
             binding.txvEmail.text = email
 
             retrieveUserData(uid)
+            retrieveUserDrinkList(uid)
         }
     }
 
@@ -116,7 +152,6 @@ class MainActivity : AppCompatActivity() {
                     userEmail.text = firebaseUser.email
                 }
 
-
                 result.append("Username: ").append(document.data?.getValue("username")).append("\n")
                     .append("Weight(kg): ").append(document.data?.getValue("weight")).append("\n")
                     .append("Height(cm): ").append(document.data?.getValue("height")).append("\n")
@@ -127,6 +162,64 @@ class MainActivity : AppCompatActivity() {
                 Log.d(STORE_TAG, "New account: ", task.exception)
             }
         }
+    }
+
+    // Method: Retrieve user information from database.
+    private fun retrieveUserDrinkList(uid: String) {
+
+        // Create a reference to the cities collection
+        val alcoholsRef = db.collection("alcohols")
+
+        // Create a query against the collection.
+        val query = alcoholsRef.whereEqualTo("uid", uid)
+
+        query.get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    Log.d(STORE_TAG, "${document.id} => ${document.data}")
+
+                    var typeNumber = 2
+                    if (document.data["alcoholType"].toString() == "Beer") typeNumber = 0
+                    if (document.data["alcoholType"].toString() == "Wine") typeNumber = 1
+
+                    val alcohols = Alcohols(
+                        document.id,
+                        imageId[typeNumber],
+                        document.data["alcoholName"].toString(),
+                        document.data["alcoholType"].toString(),
+                        document.data["alcoholPercentage"] as Double,
+                        document.data["liter"] as Double,
+                        document.data["createDate"].toString(),
+                        document.data["updateDate"].toString()
+                    )
+
+                    newArrayList.add(alcohols)
+                }
+
+                val adapter = AlcoholAdapter(newArrayList)
+
+                val swipeToDeleteCallback = object : SwipeToDeleteCallback() {
+                    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                        val position = viewHolder.adapterPosition
+                        db.collection("alcohols").document(newArrayList.get(position).id)
+                            .delete()
+                            .addOnSuccessListener { Log.d(STORE_TAG, "DocumentSnapshot successfully deleted!") }
+                            .addOnFailureListener { e -> Log.w(STORE_TAG, "Error deleting document", e) }
+
+                        newArrayList.removeAt(position)
+                        binding.recyclerView.adapter?.notifyItemRemoved(position)
+                    }
+                }
+
+                val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
+
+                itemTouchHelper.attachToRecyclerView(binding.recyclerView)
+
+                binding.recyclerView.adapter = adapter
+            }
+            .addOnFailureListener { exception ->
+                Log.d(STORE_TAG, "Error getting documents: ", exception)
+            }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
