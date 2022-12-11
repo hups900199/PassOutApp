@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import com.example.passoutapp.databinding.ActivityMainBinding
@@ -43,8 +44,13 @@ class MainActivity : AppCompatActivity() {
             when(it.itemId) {
                 R.id.nav_home -> Toast.makeText(applicationContext, "Click Home", Toast.LENGTH_SHORT).show()
                 R.id.nav_history -> Toast.makeText(applicationContext, "Click History", Toast.LENGTH_SHORT).show()
-                R.id.nav_setting -> Toast.makeText(applicationContext, "Click Setting", Toast.LENGTH_SHORT).show()
-                R.id.nav_sign_out -> Toast.makeText(applicationContext, "Click Sign Out", Toast.LENGTH_SHORT).show()
+                R.id.nav_setting -> {
+                    startActivity(Intent(this, SettingActivity::class.java))
+                }
+                R.id.nav_sign_out -> {
+                    firebaseAuth.signOut()
+                    checkUser()
+                }
             }
 
             true
@@ -54,17 +60,6 @@ class MainActivity : AppCompatActivity() {
         firebaseAuth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
         checkUser()
-
-        // Handles sign out Button event.
-        binding.btnSignOut.setOnClickListener {
-            firebaseAuth.signOut()
-            checkUser()
-        }
-
-        // Handles setting Button event.
-        binding.btnSetting.setOnClickListener {
-            startActivity(Intent(this, SettingActivity::class.java))
-        }
 
         // Handles alcohol Button event.
         binding.btnAlcohol.setOnClickListener {
@@ -111,6 +106,16 @@ class MainActivity : AppCompatActivity() {
                 // Document found in the offline cache
                 val document = task.result
                 Log.d(STORE_TAG, "Existed account: ${document?.data}")
+
+                val firebaseUser = firebaseAuth.currentUser
+                var userName: TextView = findViewById(R.id.user_name)
+                var userEmail: TextView = findViewById(R.id.user_email)
+
+                userName.text = document.data?.getValue("username").toString()
+                if (firebaseUser != null) {
+                    userEmail.text = firebaseUser.email
+                }
+
 
                 result.append("Username: ").append(document.data?.getValue("username")).append("\n")
                     .append("Weight(kg): ").append(document.data?.getValue("weight")).append("\n")

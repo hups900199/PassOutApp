@@ -10,7 +10,7 @@
     <com.google.android.material.imageview.ShapeableImageView
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:src="@drawable/round_btn"/>
+        android:src="@drawable/ic_baseline_opacity_24"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -25,6 +25,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/user_email"
         android:textSize="16dp"
         android:text="default@default.com"/>
     

@@ -1,5 +1,6 @@
 package com.example.passoutapp
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -24,6 +25,7 @@ class SettingActivity : AppCompatActivity() {
         private val GENDERS = arrayOf("Male", "Female", "Other")
     }
 
+    @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingBinding.inflate(layoutInflater)
@@ -67,8 +69,6 @@ class SettingActivity : AppCompatActivity() {
         binding.btnCancel.setOnClickListener {
             goToActivity(this, MainActivity::class.java)
         }
-
-        readFireStoreData()
     }
 
     private fun saveFireStore(uid: String, username: String, weight: Double, height: Double, gender: String) {
@@ -79,10 +79,6 @@ class SettingActivity : AppCompatActivity() {
         items.put("height", height)
         items.put("gender", gender)
 
-//        val user: MutableMap<String, Any> = HashMap()
-//        user["uid"] = uid
-//        user["height"] = height
-
         db.collection("users")
             .document(uid)
             .set(items)
@@ -92,17 +88,6 @@ class SettingActivity : AppCompatActivity() {
             .addOnFailureListener {
                 Toast.makeText(this, "Update failed", Toast.LENGTH_SHORT).show()
             }
-
-        readFireStoreData()
-
-//            val myRef = db.getReference()
-//            val gender = gender_model("male")
-//            myRef.child("SADFEWERS").setValue(gender)
-//                .addOnSuccessListener {
-//                    Log.d("DATABASE", "Account created... ${uid}\n")
-//                }.addOnFailureListener{
-//                    Log.d("DATABASE", "Failed created... ${uid}\n")
-//                }
     }
 
     // Method: Redirects to an activity.
@@ -110,26 +95,6 @@ class SettingActivity : AppCompatActivity() {
         val intent = Intent(activity, classes)
         startActivity(intent)
         activity.finish()
-    }
-
-    private fun readFireStoreData() {
-        db.collection("users")
-            .get()
-            .addOnCompleteListener {
-                val result: StringBuffer = StringBuffer()
-
-                if (it.isSuccessful) {
-                    for (document in it.result!!) {
-                        result.append(document.data.getValue("uid")).append("\n")
-                            .append(document.data.getValue("username")).append("\n")
-                            .append(document.data.getValue("weight")).append("\n")
-                            .append(document.data.getValue("height")).append("\n")
-                            .append(document.data.getValue("gender"))
-                    }
-
-                    binding.txvOutput.text = result
-                }
-            }
     }
 
     // Method: Retrieve user information from database.

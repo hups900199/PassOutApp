@@ -118,22 +118,6 @@ class AlcoholActivity : AppCompatActivity() {
 
                 itemTouchHelper.attachToRecyclerView(binding.recyclerView)
 
-//                val swipeGesture = object : SwipeGesture() {
-//                    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-//                        when(direction) {
-//                            ItemTouchHelper.LEFT -> {
-//                                adapter.deleteItem(viewHolder.adapterPosition)
-//                            }
-//
-//                            ItemTouchHelper.RIGHT -> {
-//
-//                            }
-//                        }
-//
-//                        super.onSwiped(viewHolder, direction)
-//                    }
-//                }
-
                 binding.recyclerView.adapter = adapter
             }
             .addOnFailureListener { exception ->
