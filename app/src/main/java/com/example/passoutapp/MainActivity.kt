@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.passoutapp.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -106,9 +107,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Handles refresh Button event.
-        binding.btnRefresh.setOnClickListener {
-            finish()
-            startActivity(getIntent())
+        binding.btnCalculate.setOnClickListener {
+            binding.txvBloodAlcoholContent.text = "Blood Alcohol Content(BAC): ${String.format("%.2f", calculation())}"
         }
 
         // Handles pass out Button event.
@@ -209,6 +209,26 @@ class MainActivity : AppCompatActivity() {
                         retrieveUserDrinkList(rid)
                     }
                 }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(STORE_TAG, "Error getting documents: ", exception)
+            }
+
+        val bac_query = roundsRef.orderBy("bac", Query.Direction.DESCENDING).limit(1)
+
+        bac_query.limit(1)
+            .get()
+            .addOnSuccessListener { documents ->
+                if (documents.isEmpty){
+                    binding.txvMaxBloodAlcoholContent.text = "Max BAC: 0.0"
+                } else {
+                    for (document in documents) {
+                        Log.d(STORE_TAG, "${document.id} => ${document.data}")
+
+                        binding.txvMaxBloodAlcoholContent.text = "Max BAC: ${String.format("%.2f", document.data["bac"])}"
+                    }
+                }
+
             }
             .addOnFailureListener { exception ->
                 Log.d(STORE_TAG, "Error getting documents: ", exception)
