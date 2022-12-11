@@ -2,7 +2,6 @@ package com.example.passoutapp
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -10,13 +9,18 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.passoutapp.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import java.util.ArrayList
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.properties.Delegates
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,6 +32,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var newArrayList: ArrayList<Alcohols>
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
+
+    // Variable
+    private lateinit var rid: String
+    private lateinit var gender: String
+    private var kg by Delegates.notNull<Double>()
     lateinit var imageId : Array<Int>
 
     // Constants
@@ -80,13 +89,19 @@ class MainActivity : AppCompatActivity() {
 
         // Handles start Button event.
         binding.btnStart.setOnClickListener {
+            firebaseAuth.currentUser?.let { it1 -> newRound(it1.uid) } // Create a new round
+
             binding.btnStart.setVisibility(View.INVISIBLE); //HIDE the button
             binding.drinkingLayout.setVisibility(View.VISIBLE); //SHOW the layout
         }
 
         // Handles alcohol Button event.
         binding.btnAddAlcohol.setOnClickListener {
-            startActivity(Intent(this, AddAlcoholActivity::class.java))
+            val intent = Intent(this, AddAlcoholActivity::class.java)
+
+            intent.putExtra("roundId", rid);
+
+            this.startActivity(intent)
         }
 
         // Handles refresh Button event.
@@ -97,6 +112,7 @@ class MainActivity : AppCompatActivity() {
 
         // Handles pass out Button event.
         binding.btnPassOut.setOnClickListener{
+            finishRound()
             binding.btnStart.setVisibility(View.VISIBLE); //SHOW the button
             binding.drinkingLayout.setVisibility(View.INVISIBLE); //HIDE the layout
         }
@@ -127,7 +143,8 @@ class MainActivity : AppCompatActivity() {
             binding.txvEmail.text = email
 
             retrieveUserData(uid)
-            retrieveUserDrinkList(uid)
+            // TODO: retrieve current round
+            retrieveUserRound(uid)
         }
     }
 
@@ -152,6 +169,9 @@ class MainActivity : AppCompatActivity() {
                     userEmail.text = firebaseUser.email
                 }
 
+                gender = document.data?.getValue("gender") as String
+                kg = document.data?.getValue("weight") as Double
+
                 result.append("Username: ").append(document.data?.getValue("username")).append("\n")
                     .append("Weight(kg): ").append(document.data?.getValue("weight")).append("\n")
                     .append("Height(cm): ").append(document.data?.getValue("height")).append("\n")
@@ -164,14 +184,45 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // Method: Retrieve user information from database.
-    private fun retrieveUserDrinkList(uid: String) {
+    // TODO: retrieve rounds
+    private fun retrieveUserRound(uid: String) {
+        // Create a reference to the cities collection
+        val roundsRef = db.collection("rounds")
 
+        // Create a query against the collection.
+        val query = roundsRef.whereEqualTo("uid", uid).whereEqualTo("status", "start")
+
+        query.limit(1)
+            .get()
+            .addOnSuccessListener { documents ->
+                if (documents.isEmpty){
+                    binding.btnStart.setVisibility(View.VISIBLE); //SHOW the button
+                    binding.drinkingLayout.setVisibility(View.INVISIBLE); //HIDE the layout
+                } else {
+                    binding.btnStart.setVisibility(View.INVISIBLE); //HIDE the button
+                    binding.drinkingLayout.setVisibility(View.VISIBLE); //SHOW the layout
+
+                    for (document in documents) {
+                        Log.d(STORE_TAG, "${document.id} => ${document.data}")
+
+                        rid = document.id
+                        retrieveUserDrinkList(rid)
+                    }
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(STORE_TAG, "Error getting documents: ", exception)
+            }
+    }
+
+    // Method: Retrieve user's drink list from database.
+    // TODO: retrieve by round
+    private fun retrieveUserDrinkList(rid: String) {
         // Create a reference to the cities collection
         val alcoholsRef = db.collection("alcohols")
 
         // Create a query against the collection.
-        val query = alcoholsRef.whereEqualTo("uid", uid)
+        val query = alcoholsRef.whereEqualTo("rid", rid)
 
         query.get()
             .addOnSuccessListener { documents ->
@@ -220,6 +271,73 @@ class MainActivity : AppCompatActivity() {
             .addOnFailureListener { exception ->
                 Log.d(STORE_TAG, "Error getting documents: ", exception)
             }
+    }
+
+    // TODO: Create a new round
+    private fun newRound(uid: String)
+    {
+        val dateFormat: DateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
+        val items = HashMap<String, Any>()
+        items.put("uid", uid)
+        items.put("bac", 0.0)
+        items.put("status", "start")
+        items.put("createDate", dateFormat.format(Date()))
+
+        db.collection("rounds")
+            .add(items)
+            .addOnSuccessListener {
+                rid = it.id
+                Toast.makeText(this, "Add new round successfully", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Add new round failed", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    // TODO: Finish current round
+    private fun finishRound()
+    {
+        val bac = calculation()
+        val dateFormat: DateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
+        val items = HashMap<String, Any>()
+        items.put("bac", bac)
+        items.put("status", "finish")
+        items.put("finishDate", dateFormat.format(Date()))
+
+        Log.d(STORE_TAG, "bac: ${bac}")
+
+        db.collection("rounds").document(rid)
+            .update(items)
+            .addOnSuccessListener {
+                Toast.makeText(this, "Finish round successfully", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Finish round failed", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun calculation(): Double
+    {
+        Log.d(STORE_TAG, "Start calculation")
+        var alcohol_consumed_ounces = 0.0
+        var genderParameter = 0.0
+        var BAC = 0.0
+
+        when (gender) {
+            "Male" -> genderParameter = 0.73
+            "Female" -> genderParameter = 0.66
+            else -> { // Note the block
+                genderParameter = 0.695
+            }
+        }
+
+        newArrayList.forEach {
+            alcohol_consumed_ounces += ((it.liter * 33.814) * it.percentage) / 100
+        }
+
+        BAC = (alcohol_consumed_ounces * 5.14 / (kg * 2.20462) * genderParameter)
+
+        return BAC
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

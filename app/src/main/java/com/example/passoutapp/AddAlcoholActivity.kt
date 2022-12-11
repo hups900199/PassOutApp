@@ -46,24 +46,26 @@ class AddAlcoholActivity : AppCompatActivity() {
         binding.btnAddAlcohol.setOnClickListener {
             Log.d(STORE_TAG, "Retrieve Inputs")
 
-            val uid = firebaseAuth.uid.toString()
+            val extras = intent.extras
+
+            val rid = extras?.getString("roundId").toString()
             val alcoholName = binding.edtAlcoholName.text.toString().trim()
             val alcoholType = binding.spnAlcoholType.selectedItem.toString().trim()
             val alcoholPercentage = binding.edtAlcoholPercentage.text.toString().trim().toDouble()
             val liter = binding.edtLiter.text.toString().trim().toDouble()
 
-            Log.d(STORE_TAG, "UID: $uid")
+            Log.d(STORE_TAG, "RID: $rid")
             Log.d(STORE_TAG, "Alcohol Name: $alcoholName")
             Log.d(STORE_TAG, "Alcohol Type: $alcoholType")
             Log.d(STORE_TAG, "Alcohol Percentage: $alcoholPercentage")
             Log.d(STORE_TAG, "Liter: $liter")
 
-            if (uid.isNotEmpty() && !alcoholPercentage.isNaN() && !liter.isNaN()) {
+            if (rid.isNotEmpty() && !alcoholPercentage.isNaN() && !liter.isNaN()) {
                 val date = Date()
-                saveAlcohol(uid, alcoholName, alcoholType, alcoholPercentage, liter, date)
+                saveAlcohol(rid, alcoholName, alcoholType, alcoholPercentage, liter, date)
                 finish();
             } else {
-                Toast.makeText(this, "Username cannot be empty.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Alcohol name cannot be empty.", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -72,7 +74,7 @@ class AddAlcoholActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveAlcohol(uid: String,
+    private fun saveAlcohol(rid: String,
                             alcoholName: String,
                             alcoholType: String,
                             alcoholPercentage: Double,
@@ -81,7 +83,7 @@ class AddAlcoholActivity : AppCompatActivity() {
     {
         val dateFormat: DateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
         val items = HashMap<String, Any>()
-        items.put("uid", uid)
+        items.put("rid", rid)
         items.put("alcoholName", alcoholName)
         items.put("alcoholType", alcoholType)
         items.put("alcoholPercentage", alcoholPercentage)
