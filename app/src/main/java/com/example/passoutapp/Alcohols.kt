@@ -1,7 +1,5 @@
 package com.example.passoutapp
 
-import java.util.*
-
 data class Alcohols(
     var id : String,
     var image : Int,

@@ -59,7 +59,9 @@ class MainActivity : AppCompatActivity() {
         binding.navView.setNavigationItemSelectedListener {
             when(it.itemId) {
                 R.id.nav_home -> Toast.makeText(applicationContext, "Click Home", Toast.LENGTH_SHORT).show()
-                R.id.nav_history -> Toast.makeText(applicationContext, "Click History", Toast.LENGTH_SHORT).show()
+                R.id.nav_history -> {
+                    startActivity(Intent(this, HistoryActivity::class.java))
+                }
                 R.id.nav_setting -> {
                     startActivity(Intent(this, SettingActivity::class.java))
                 }
