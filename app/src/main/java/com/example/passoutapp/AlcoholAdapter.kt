@@ -1,5 +1,6 @@
 package com.example.passoutapp
 
+import android.app.Activity
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.imageview.ShapeableImageView
 import java.util.*
+
 
 class AlcoholAdapter(private val alcoholsList: ArrayList<Alcohols>) : RecyclerView.Adapter<AlcoholAdapter.AlcoholViewHolder>() {
 
@@ -41,6 +43,8 @@ class AlcoholAdapter(private val alcoholsList: ArrayList<Alcohols>) : RecyclerVi
             val selectedType = alcoholsList.get(pos).type
             val selectedPercentage = alcoholsList.get(pos).percentage
             val selectedLiter = alcoholsList.get(pos).liter
+
+            (parent.context as Activity).finish()
 
             val intent = Intent(parent.context, UpdateAlcoholActivity::class.java)
             intent.putExtra("selectedPosition", pos);

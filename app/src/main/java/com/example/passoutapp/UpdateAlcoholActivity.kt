@@ -62,7 +62,8 @@ class UpdateAlcoholActivity : AppCompatActivity() {
             if (uid.isNotEmpty() && !alcoholPercentage.isNaN() && !liter.isNaN()) {
                 val date = Date()
                 saveAlcohol(uid, alcoholName, alcoholType, alcoholPercentage, liter, date)
-                finish();
+                this.finish()
+                startActivity(Intent(this, MainActivity::class.java))
             } else {
                 Toast.makeText(this, "Username cannot be empty.", Toast.LENGTH_SHORT).show()
             }
@@ -70,6 +71,7 @@ class UpdateAlcoholActivity : AppCompatActivity() {
 
         binding.btnCancel.setOnClickListener {
             this.finish()
+            startActivity(Intent(this, MainActivity::class.java))
         }
 
         // Retrieve data from other activities.

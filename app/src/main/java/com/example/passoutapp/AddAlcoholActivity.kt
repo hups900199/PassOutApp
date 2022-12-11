@@ -63,7 +63,8 @@ class AddAlcoholActivity : AppCompatActivity() {
             if (rid.isNotEmpty() && !alcoholPercentage.isNaN() && !liter.isNaN()) {
                 val date = Date()
                 saveAlcohol(rid, alcoholName, alcoholType, alcoholPercentage, liter, date)
-                finish();
+                this.finish()
+                startActivity(Intent(this, MainActivity::class.java))
             } else {
                 Toast.makeText(this, "Alcohol name cannot be empty.", Toast.LENGTH_SHORT).show()
             }
@@ -71,6 +72,7 @@ class AddAlcoholActivity : AppCompatActivity() {
 
         binding.btnCancel.setOnClickListener {
             this.finish()
+            startActivity(Intent(this, MainActivity::class.java))
         }
     }
 

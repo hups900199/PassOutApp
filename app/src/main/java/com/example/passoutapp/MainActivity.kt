@@ -97,11 +97,10 @@ class MainActivity : AppCompatActivity() {
 
         // Handles alcohol Button event.
         binding.btnAddAlcohol.setOnClickListener {
+            finish()
             val intent = Intent(this, AddAlcoholActivity::class.java)
-
             intent.putExtra("roundId", rid);
-
-            this.startActivity(intent)
+            startActivity(intent)
         }
 
         // Handles refresh Button event.
@@ -113,8 +112,8 @@ class MainActivity : AppCompatActivity() {
         // Handles pass out Button event.
         binding.btnPassOut.setOnClickListener{
             finishRound()
-            binding.btnStart.setVisibility(View.VISIBLE); //SHOW the button
-            binding.drinkingLayout.setVisibility(View.INVISIBLE); //HIDE the layout
+            finish()
+            startActivity(getIntent())
         }
     }
 
@@ -143,7 +142,6 @@ class MainActivity : AppCompatActivity() {
             binding.txvEmail.text = email
 
             retrieveUserData(uid)
-            // TODO: retrieve current round
             retrieveUserRound(uid)
         }
     }
@@ -184,7 +182,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // TODO: retrieve rounds
+    // Method: Retrieve user current round from database.
     private fun retrieveUserRound(uid: String) {
         // Create a reference to the cities collection
         val roundsRef = db.collection("rounds")
@@ -216,7 +214,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Method: Retrieve user's drink list from database.
-    // TODO: retrieve by round
     private fun retrieveUserDrinkList(rid: String) {
         // Create a reference to the cities collection
         val alcoholsRef = db.collection("alcohols")
@@ -273,7 +270,7 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
-    // TODO: Create a new round
+    // Create a new round
     private fun newRound(uid: String)
     {
         val dateFormat: DateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
@@ -294,7 +291,7 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
-    // TODO: Finish current round
+    // Finish current round
     private fun finishRound()
     {
         val bac = calculation()
@@ -316,6 +313,7 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
+    // Calculates Blood Alcohol Content (BAC)
     private fun calculation(): Double
     {
         Log.d(STORE_TAG, "Start calculation")
@@ -340,6 +338,7 @@ class MainActivity : AppCompatActivity() {
         return BAC
     }
 
+    // Handles menu items
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (toggle.onOptionsItemSelected(item)) {
             return true
