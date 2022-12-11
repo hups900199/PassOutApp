@@ -214,10 +214,10 @@ class MainActivity : AppCompatActivity() {
                 Log.d(STORE_TAG, "Error getting documents: ", exception)
             }
 
-        val bac_query = roundsRef.orderBy("bac", Query.Direction.DESCENDING).limit(1)
+        var max_bac = 0.0
+        val user_query = roundsRef.whereEqualTo("uid", uid).whereEqualTo("status", "finish")
 
-        bac_query.limit(1)
-            .get()
+        user_query.get()
             .addOnSuccessListener { documents ->
                 if (documents.isEmpty){
                     binding.txvMaxBloodAlcoholContent.text = "Max BAC: 0.0"
@@ -225,7 +225,11 @@ class MainActivity : AppCompatActivity() {
                     for (document in documents) {
                         Log.d(STORE_TAG, "${document.id} => ${document.data}")
 
-                        binding.txvMaxBloodAlcoholContent.text = "Max BAC: ${String.format("%.2f", document.data["bac"])}"
+                        if (document.data["bac"] as Double > max_bac)
+                        {
+                            max_bac = document.data["bac"] as Double
+                            binding.txvMaxBloodAlcoholContent.text = "Max BAC: ${String.format("%.2f", document.data["bac"])}"
+                        }
                     }
                 }
 
